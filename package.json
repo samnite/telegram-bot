@@ -8,6 +8,9 @@
     "start": "node index.js",
     "nodemon": "nodemon index.js"
   },
+  "engines": {
+    "node": "10.15.3"
+  },
   "dependencies": {
     "nodemon": "^2.0.4",
     "telegraf": "^3.38.0"
