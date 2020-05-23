@@ -1,13 +1,10 @@
 const { Telegraf } = require('telegraf');
 
-const bot = new Telegraf('1225000134:AAGgX9tBvaHbe08P3fIjpPAuYbq7Dy3T4QU')
+const bot = new Telegraf(process.env.BOT_TOKEN)
 bot.start((ctx) => ctx.reply('Welcome'))
 bot.help((ctx) => ctx.reply('Send me a sticker'))
 bot.on('sticker', (ctx) => ctx.reply('👍'))
 bot.hears('hi', (ctx) => ctx.reply('Hey there'))
-
-
-
 bot.hears('хуй', (ctx) => ctx.reply('Нехуй материться, блять!'))
 bot.hears('cs', (ctx) => ctx.reply('Counter-Strike Server IP: 104.199.71.150:27015\n' +
   'Half-Life Server IP: 34.77.193.114:27015\n' +
