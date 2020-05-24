@@ -17,7 +17,7 @@ const updateCovidData = (bot) => {
         .catch((err) => console.log(err));
       // Write file to server
       const data = JSON.stringify(res.data);
-      fs.writeFile("./covidInfo.json", data, (i) => console.log(i));
+      fs.writeFile("./db/covidInfo.json", data, (i) => console.log(i));
     })
     .catch((err) => console.log(err));
 };

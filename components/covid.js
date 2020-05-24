@@ -1,11 +1,10 @@
-const axios = require("axios");
 const fs = require("fs");
 
 const fetchData = (ctx) => {
   let text = ctx.update.message.text.split(" ")[1];
   if (text) text = text.toLowerCase();
 
-  fs.readFile("./covidInfo.json", function readFileCallback(err, data) {
+  fs.readFile("./db/covidInfo.json", function readFileCallback(err, data) {
     if (err) {
       return ctx.reply(
         `@${
