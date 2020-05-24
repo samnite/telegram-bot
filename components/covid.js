@@ -1,12 +1,22 @@
 const axios = require("axios");
+const fs = require("fs");
 
 const fetchData = (ctx) => {
   let text = ctx.update.message.text.split(" ")[1];
   if (text) text = text.toLowerCase();
 
-  axios
-    .get("https://api.covid19api.com/summary")
-    .then((res) => {
+  fs.readFile("./covidInfo.json", function readFileCallback(err, data) {
+    if (err) {
+      return ctx.reply(
+        `@${
+          ctx.update.message.from.username
+            ? ctx.update.message.from.username
+            : ctx.update.message.from.first_name
+        }, Превышен интервал обращений к серверу, попробуй позже `
+      );
+    } else {
+      const covidData = JSON.parse(data);
+      console.log(covidData.Global);
       const {
         NewConfirmed,
         TotalConfirmed,
@@ -14,8 +24,8 @@ const fetchData = (ctx) => {
         TotalDeaths,
         NewRecovered,
         TotalRecovered,
-      } = res.data.Global;
-      const country = res.data.Countries.find(
+      } = covidData.Global;
+      const country = covidData.Countries.find(
         (country) => country.Slug === text
       );
       return ctx.reply(
@@ -24,19 +34,19 @@ const fetchData = (ctx) => {
             ? ctx.update.message.from.username
             : ctx.update.message.from.first_name
         }, 
-        Статистика по коронавирусу в мире на данный момент:
-        Зарегистрировано случаев: *${TotalConfirmed}* (+_${NewConfirmed}_)
-        Смертельных случаев: *${TotalDeaths}* (+_${NewDeaths}_)
-        Выздоровело: *${TotalRecovered}* (+_${NewRecovered}_)
+        COVID-19 Worldwide statistics:
+        Confirmed cases: *${TotalConfirmed}* (+_${NewConfirmed}_)
+        Death cases: *${TotalDeaths}* (+_${NewDeaths}_)
+        Recovered: *${TotalRecovered}* (+_${NewRecovered}_)
         
         ${
           country
-            ? `Статистика по стране *${text[0].toUpperCase() + text.slice(1)}*:
-        Зарегистрировано случаев: *${country.TotalConfirmed}* (+_${
+            ? `Statistics by country *${text[0].toUpperCase() + text.slice(1)}*:
+        Confirmed cases: *${country.TotalConfirmed}* (+_${
                 country.NewConfirmed
               }_)
-        Смертельных случаев: *${country.TotalDeaths}* (+_${country.NewDeaths}_)
-        Выздоровело: *${country.TotalRecovered}* (+_${country.NewRecovered}_)
+        Death cases: *${country.TotalDeaths}* (+_${country.NewDeaths}_)
+        Recovered: *${country.TotalRecovered}* (+_${country.NewRecovered}_)
          `
             : ""
         }
@@ -45,17 +55,8 @@ const fetchData = (ctx) => {
           parse_mode: "markdown",
         }
       );
-    })
-    .catch((err) => {
-      console.log(err);
-      return ctx.reply(
-        `@${
-          ctx.update.message.from.username
-            ? ctx.update.message.from.username
-            : ctx.update.message.from.first_name
-        }, Превышен интервал обращений к серверу, попробуй позже `
-      );
-    });
+    }
+  });
 };
 
 module.exports = { fetchData };
