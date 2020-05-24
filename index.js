@@ -7,8 +7,10 @@ bot.help((ctx) => ctx.reply("Send me a sticker"));
 bot.on("sticker", (ctx) => ctx.reply("👍"));
 bot.hears("hi", (ctx) => ctx.reply("Hey there"));
 
-bot.command("corona", (ctx) => {
-  console.log(ctx.update);
+let covidData = {};
+
+bot.command(["corona", "c"], (ctx) => {
+  const text = ctx.update.message.text.split(" ")[1];
   axios
     .get("https://api.covid19api.com/summary")
     .then((res) => {
@@ -20,7 +22,10 @@ bot.command("corona", (ctx) => {
         NewRecovered,
         TotalRecovered,
       } = res.data.Global;
-      console.log(res.data.Global);
+      const country = res.data.Countries.find(
+        (country) => country.Slug === text.toLowerCase()
+      );
+      covidData = res.data;
       return ctx.reply(
         `@${
           ctx.update.message.from.username
@@ -31,6 +36,18 @@ bot.command("corona", (ctx) => {
         Зарегистрировано случаев: *${TotalConfirmed}* (+_${NewConfirmed}_)
         Смертельных случаев: *${TotalDeaths}* (+_${NewDeaths}_)
         Выздоровело: *${TotalRecovered}* (+_${NewRecovered}_)
+        
+        ${
+          country
+            ? `Статистика по стране *${text[0].toUpperCase() + text.slice(1)}*:
+        Зарегистрировано случаев: *${country.TotalConfirmed}* (+_${
+                country.NewConfirmed
+              }_)
+        Смертельных случаев: *${country.TotalDeaths}* (+_${country.NewDeaths}_)
+        Выздоровело: *${country.TotalRecovered}* (+_${country.NewRecovered}_)
+         `
+            : ""
+        }
          `,
         {
           parse_mode: "markdown",
