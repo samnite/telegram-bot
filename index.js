@@ -4,6 +4,7 @@ const { counterStrikeInfo } = require("./components/counterStrike");
 const { badWordsFilter } = require("./components/badWordsFilter");
 const { updateCovidData } = require("./util/updateCovidBase");
 const CronJob = require("cron").CronJob;
+const { gallery } = require("./components/gallery");
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
@@ -13,7 +14,7 @@ bot.on("sticker", (ctx) => ctx.reply("👍"));
 bot.hears("hi", (ctx) => ctx.reply("Hey there"));
 
 // Cron task
-const job = new CronJob("0 */59 * * * *", function () {
+const job = new CronJob("0 0 */2 * * *", function () {
   // Update Covid-19 Database
   updateCovidData(bot);
 });
@@ -32,6 +33,11 @@ bot.command(["cs", "Cs", "CS"], (ctx) => {
 // Manual Update Covid-9 Base
 bot.command(["update", "u", "U", "Update"], () => {
   updateCovidData(bot);
+});
+
+// test
+bot.hears(["test"], (ctx) => {
+  gallery(ctx);
 });
 
 // Run Bad Words Filter Component
