@@ -4,6 +4,7 @@ const { counterStrikeInfo } = require("./components/counterStrike");
 const { badWordsFilter } = require("./components/badWordsFilter");
 const axios = require("axios");
 const fs = require("fs");
+const { updateCovidData } = require("./util/updateCovidBase");
 const CronJob = require("cron").CronJob;
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
@@ -14,22 +15,9 @@ bot.on("sticker", (ctx) => ctx.reply("👍"));
 bot.hears("hi", (ctx) => ctx.reply("Hey there"));
 
 // Cron task
-const job = new CronJob("0 */10 * * * *", function () {
-  const d = new Date();
-  // Fetch data
-  axios
-    .get("https://api.covid19api.com/summary")
-    .then((res) => {
-      // Send Message
-      bot.telegram
-        .sendMessage("-1001307324588", `База данных обновлена: ${d}`)
-        .then((info) => console.log(info))
-        .catch((err) => console.log(err));
-      // Write file to server
-      const data = JSON.stringify(res.data);
-      fs.writeFile("./covidInfo.json", data, (i) => console.log(i));
-    })
-    .catch((err) => console.log(err));
+const job = new CronJob("0 */59 * * * *", function () {
+  // Update Covid-19 Database
+  updateCovidData(bot);
 });
 job.start();
 
@@ -43,9 +31,10 @@ bot.command(["cs", "cs@SamniteBot"], (ctx) => {
   counterStrikeInfo(ctx);
 });
 
-// Tests
-bot.hears("test", (ctx) => {
-  return ctx.reply("Hey there");
+// Manual Update Covid-9 Base
+bot.command(["update", "u"], (ctx) => {
+  updateCovidData(bot);
+  // return ctx.reply("Hey there");
 });
 
 // Run Bad Words Filter Component
