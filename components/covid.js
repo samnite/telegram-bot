@@ -1,7 +1,9 @@
 const axios = require("axios");
 
 const fetchData = (ctx) => {
-  const text = ctx.update.message.text.split(" ")[1];
+  let text = ctx.update.message.text.split(" ")[1];
+  if (text) text = text.toLowerCase();
+
   axios
     .get("https://api.covid19api.com/summary")
     .then((res) => {
