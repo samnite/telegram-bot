@@ -31,12 +31,23 @@ bot.command(["cs", "Cs", "CS"], (ctx) => {
 });
 
 // Manual Update Covid-9 Base
-bot.command(["update", "u", "U", "Update"], () => {
-  updateCovidData(bot);
+bot.command(["update", "u", "U", "Update"], (ctx) => {
+  if (ctx.update.message.from.id === 605615617) {
+    updateCovidData(bot);
+  } else {
+    return ctx.reply(
+      `@${
+        ctx.update.message.from.username
+          ? ctx.update.message.from.username
+          : ctx.update.message.from.first_name
+      }, You have no permissions to run this command!`
+    );
+  }
 });
 
 // test
 bot.hears(["test"], (ctx) => {
+  console.log(ctx.update.message.from.id);
   gallery(ctx);
 });
 
