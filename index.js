@@ -45,11 +45,17 @@ bot.command(["update", "u", "U", "Update"], (ctx) => {
   }
 });
 
-// test
-bot.hears(["test"], (ctx) => {
+// Gallery
+bot.command(["gallery", "Gallery", "G", "g"], (ctx) => {
   console.log(ctx.update.message.from.id);
-  gallery(ctx);
+  gallery(ctx, bot);
 });
+
+// test
+// bot.hears(["test"], (ctx) => {
+//   console.log(ctx.update.message.from.id);
+//   gallery(ctx);
+// });
 
 // Run Bad Words Filter Component
 badWordsFilter(bot);

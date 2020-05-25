@@ -11,7 +11,7 @@ const updateCovidData = (bot) => {
       bot.telegram
         .sendMessage(
           "-1001307324588",
-          `Covid-19 Database Update Successfully: ${date}`
+          `Covid-19 Database Successfully Updated : ${date}`
         )
         .then((info) => console.log(info))
         .catch((err) => console.log(err));

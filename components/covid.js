@@ -11,7 +11,7 @@ const fetchData = (ctx) => {
           ctx.update.message.from.username
             ? ctx.update.message.from.username
             : ctx.update.message.from.first_name
-        }, Превышен интервал обращений к серверу, попробуй позже `
+        }, Something went wrong... `
       );
     } else {
       const covidData = JSON.parse(data);
@@ -33,19 +33,17 @@ const fetchData = (ctx) => {
             ? ctx.update.message.from.username
             : ctx.update.message.from.first_name
         }, 
-        COVID-19 Worldwide statistics:
-        Confirmed cases: *${TotalConfirmed}* (+_${NewConfirmed}_)
-        Death cases: *${TotalDeaths}* (+_${NewDeaths}_)
-        Recovered: *${TotalRecovered}* (+_${NewRecovered}_)
-        
+COVID-19 Worldwide statistics:
+Confirmed cases: *${TotalConfirmed}* (+_${NewConfirmed}_)
+Death cases: *${TotalDeaths}* (+_${NewDeaths}_)
+Recovered: *${TotalRecovered}* (+_${NewRecovered}_)        
         ${
           country
-            ? `Statistics by country *${text[0].toUpperCase() + text.slice(1)}*:
-        Confirmed cases: *${country.TotalConfirmed}* (+_${
-                country.NewConfirmed
-              }_)
-        Death cases: *${country.TotalDeaths}* (+_${country.NewDeaths}_)
-        Recovered: *${country.TotalRecovered}* (+_${country.NewRecovered}_)
+            ? `
+Statistics by country *${text[0].toUpperCase() + text.slice(1)}*:
+Confirmed cases: *${country.TotalConfirmed}* (+_${country.NewConfirmed}_)
+Death cases: *${country.TotalDeaths}* (+_${country.NewDeaths}_)
+Recovered: *${country.TotalRecovered}* (+_${country.NewRecovered}_)
          `
             : ""
         }
