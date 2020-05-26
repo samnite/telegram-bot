@@ -72,15 +72,6 @@
 //     { type: "search", title: "computer hardware" },
 //   ],
 // };
-
-const type = item.attachments[length].type;
-const media = item.attachments[length].photo.id;
-const ownerId = item.attachments[length].photo.owner_id;
-const accessKey = item.attachments[length].photo.access_key;
-console.log(accessKey);
-
-// &attachment=${type}${ownerId}_${media}_${accessKey}
-
-const urlMsgSend = `https://cors-anywhere.herokuapp.com/https://api.vk.co..${userId}&random_id=${id}&message=${text}${`${
-  item.attachment ? `&attachment=${type}${ownerId}_${media}_${accessKey}` : null
-}`}&v=5.103&access_token=42cab924826274e296e5b05607478d00a6d437eba36e85f08b3e89856abe4c5414bad73594f75f9c86e4c`;
+//
+// require("dotenv").config();
+// console.log(process.env.UNSPLASH_ACCESS_KEY);

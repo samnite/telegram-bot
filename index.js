@@ -6,6 +6,7 @@ const { updateCovidData } = require("./util/updateCovidBase");
 const CronJob = require("cron").CronJob;
 const { gallery } = require("./components/gallery");
 
+require("dotenv").config();
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
 bot.start((ctx) => ctx.reply("Welcome"));
@@ -14,7 +15,7 @@ bot.on("sticker", (ctx) => ctx.reply("👍"));
 bot.hears("hi", (ctx) => ctx.reply("Hey there"));
 
 // Cron task
-const job = new CronJob("0 0 */2 * * *", function () {
+const job = new CronJob("0 0 */6 * * *", function () {
   // Update Covid-19 Database
   updateCovidData(bot);
 });
