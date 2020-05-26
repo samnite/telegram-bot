@@ -2,12 +2,11 @@ const fetch = require("node-fetch");
 const { toJson } = require("unsplash-js");
 const Unsplash = require("unsplash-js").default;
 
+require("dotenv").config(); // No needed on prod
+
 global.fetch = fetch;
 const unsplash = new Unsplash({
-  accessKey:
-    require("dotenv").config().parsed.NODE_ENV === "dev"
-      ? require("dotenv").config().parsed.UNSPLASH_ACCESS_KEY
-      : process.env.UNSPLASH_ACCESS_KEY,
+  accessKey: process.env.UNSPLASH_ACCESS_KEY,
 });
 
 const gallery = (ctx, bot) => {

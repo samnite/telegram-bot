@@ -47,7 +47,6 @@ bot.command(["update", "u", "U", "Update"], (ctx) => {
 
 // Gallery
 bot.command(["gallery", "Gallery", "G", "g"], (ctx) => {
-  console.log(ctx.update.message.from.id);
   gallery(ctx, bot);
 });
 
