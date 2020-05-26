@@ -26,7 +26,7 @@ const gallery = (ctx, bot) => {
     .catch((err) => console.log(err));
 
   unsplash.search
-    .photos(text.join(" "), 1, 10)
+    .photos(text.join(" "), 1, 8)
     .then(toJson)
     .then((json) => {
       // Your code
@@ -43,6 +43,7 @@ const gallery = (ctx, bot) => {
           `,
           parse_mode: "markdown",
         });
+        unsplash.photos.downloadPhoto(photo);
       });
       return ctx.telegram.sendMediaGroup(ctx.update.message.chat.id, urls, {
         reply_to_message_id: ctx.update.message.message_id,
