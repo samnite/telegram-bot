@@ -2,7 +2,7 @@ const fetch = require("node-fetch");
 const { toJson } = require("unsplash-js");
 const Unsplash = require("unsplash-js").default;
 
-require("dotenv").config(); // No needed on prod
+// require("dotenv").config(); // No needed on prod
 
 global.fetch = fetch;
 const unsplash = new Unsplash({
