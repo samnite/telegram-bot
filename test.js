@@ -74,4 +74,5 @@
 // };
 //
 // require("dotenv").config();
-// console.log(process.env.UNSPLASH_ACCESS_KEY);
+console.log(process.env.NODE_ENV);
+// console.log(require("dotenv").config().parsed.NODE_ENV);

@@ -2,11 +2,12 @@ const fetch = require("node-fetch");
 const { toJson } = require("unsplash-js");
 const Unsplash = require("unsplash-js").default;
 
-require("dotenv").config();
-
 global.fetch = fetch;
 const unsplash = new Unsplash({
-  accessKey: process.env.UNSPLASH_ACCESS_KEY,
+  accessKey:
+    require("dotenv").config().parsed.NODE_ENV === "dev"
+      ? require("dotenv").config().parsed.UNSPLASH_ACCESS_KEY
+      : process.env.UNSPLASH_ACCESS_KEY,
 });
 
 const gallery = (ctx, bot) => {
@@ -21,7 +22,9 @@ const gallery = (ctx, bot) => {
           ctx.update.message.from.username
             ? ctx.update.message.from.username
             : ctx.update.message.from.first_name
-        }, Searching "${text.join(" ")}" photos, please wait....`
+        }, Searching "${text.join(
+          " "
+        )}" photos, request can take up to 60 seconds, please wait...`
       )
       .then((info) => console.log(info))
       .catch((err) => console.log(err));
