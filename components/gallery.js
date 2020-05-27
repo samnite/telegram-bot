@@ -1,8 +1,10 @@
 const fetch = require("node-fetch");
 const { toJson } = require("unsplash-js");
 const Unsplash = require("unsplash-js").default;
+const { sendMessage } = require("../util/send-message");
+const { parseReq } = require("../util/utility");
 
-// require("dotenv").config(); // No needed on prod
+if (process.env.NODE_ENV !== "production") require("dotenv").config();
 
 global.fetch = fetch;
 const unsplash = new Unsplash({
@@ -10,62 +12,73 @@ const unsplash = new Unsplash({
 });
 
 const gallery = (ctx, bot) => {
-  let text = ctx.update.message.text.split(" ");
+  const text = parseReq(ctx.update.message.text);
   let urls = [];
   if (text.length > 1) {
-    text.shift();
-    bot.telegram
-      .sendMessage(
-        ctx.update.message.chat.id,
-        `@${
-          ctx.update.message.from.username
-            ? ctx.update.message.from.username
-            : ctx.update.message.from.first_name
-        }, Searching "${text.join(
-          " "
-        )}" photos, request can take up to 60 seconds, please wait...`
-      )
-      .then((info) => console.log(info))
-      .catch((err) => console.log(err));
+    const msg = `Searching for *"${text}"* photos, request can take up to 60 seconds, please wait...`;
+    sendMessage(ctx, bot, msg);
 
+    // Fetch all photos from unsplash server
     unsplash.search
-      .photos(text.join(" "), 1, 8)
+      .photos(text)
       .then(toJson)
-      .then((json) => {
-        // Your code
-        const photos = json.results;
-        photos.forEach((photo) => {
-          urls.push({
-            type: "photo",
-            media: photo.urls.regular,
-            caption: `
-          *Title*: *${photo.alt_description}*
-*Author*: [${photo.user.name}](${photo.user.links.html})
-[Download Image](${photo.links.download}) 
-👍 ${photo.likes}
-          `,
-            parse_mode: "markdown",
+      .then((res) => {
+        // Check empty response
+        if (res.total_pages === 0) {
+          sendMessage(ctx, bot, "Sorry, nothing found...");
+          return null;
+        }
+        unsplash.search
+          .photos(text, 1, 10)
+          .then(toJson)
+          .then((res) => {
+            const photos = res.results;
+            photos.forEach((photo) => {
+              urls.push({
+                type: "photo",
+                media: photo.urls.regular,
+                caption: `
+                      *Title*: ${
+                        photo.description
+                          ? photo.description
+                          : photo.alt_description
+                      }
+            *Author*: [${photo.user.name}](${photo.user.links.html})
+            [Download Image](${photo.links.download})
+            👍 ${photo.likes}
+                      `,
+                parse_mode: "Markdown",
+              });
+              unsplash.photos.downloadPhoto(photo);
+            });
+            console.log("FUUUUUURLSSSS", urls); // TODO check when 50 requests ends
+            return ctx.telegram.sendMediaGroup(
+              ctx.update.message.chat.id,
+              urls,
+              {
+                reply_to_message_id: ctx.update.message.message_id,
+              }
+            );
+          })
+          .catch((err) => {
+            sendMessage(
+              ctx,
+              bot,
+              `Error: ${
+                err.code === 400
+                  ? "Maximum requests reached, try again later"
+                  : err.description
+              }`
+            );
           });
-          unsplash.photos.downloadPhoto(photo);
-        });
-        return ctx.telegram.sendMediaGroup(ctx.update.message.chat.id, urls, {
-          reply_to_message_id: ctx.update.message.message_id,
-        });
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        const msg = `Error: _${err.message}_`;
+        sendMessage(ctx, bot, msg);
+      });
   } else {
-    bot.telegram
-      .sendMessage(
-        ctx.update.message.chat.id,
-        `@${
-          ctx.update.message.from.username
-            ? ctx.update.message.from.username
-            : ctx.update.message.from.first_name
-        }, please type your request to search photos in format */gallery search_request*, example: \`\`\` /gallery cool cats\`\`\``,
-        { parse_mode: "Markdown" }
-      )
-      .then((info) => console.log(info))
-      .catch((err) => console.log(err));
+    const msg = `please type your request to search photos in format */gallery search_request*, example: \`\`\` /gallery cool cats\`\`\``;
+    sendMessage(ctx, bot, msg);
   }
 };
 

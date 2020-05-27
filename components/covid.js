@@ -1,8 +1,9 @@
 const fs = require("fs");
+const { parseReq } = require("../util/utility");
 
 const fetchData = (ctx) => {
-  let text = ctx.update.message.text.split(" ")[1];
-  if (text) text = text.toLowerCase();
+  let text = parseReq(ctx.update.message.text);
+  if (text.length > 1) text = text.toLowerCase();
 
   fs.readFile("./db/covidInfo.json", function readFileCallback(err, data) {
     if (err) {
