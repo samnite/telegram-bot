@@ -1,5 +1,6 @@
 const { Telegraf } = require("telegraf");
 const { fetchData } = require("./components/covid");
+const { pinMessage } = require("./components/pin-message");
 const { counterStrikeInfo } = require("./components/counterStrike");
 const { badWordsFilter } = require("./components/badWordsFilter");
 const { gallery } = require("./components/gallery");
@@ -10,10 +11,10 @@ const CronJob = require("cron").CronJob;
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
-bot.start((ctx) => ctx.reply("Welcome"));
-bot.help((ctx) => ctx.reply("Send me a sticker"));
-bot.on("sticker", (ctx) => ctx.reply("👍"));
-bot.hears("hi", (ctx) => ctx.reply("Hey there"));
+// bot.start((ctx) => ctx.reply("Welcome"));
+// bot.help((ctx) => ctx.reply("Send me a sticker"));
+// bot.on("sticker", (ctx) => ctx.reply("👍"));
+// bot.hears("hi", (ctx) => ctx.reply("Hey there"));
 
 // Cron task
 const job = new CronJob("0 0 */6 * * *", function () {
@@ -57,6 +58,21 @@ bot.command(["translate", "Translate", "T", "t"], (ctx) => {
   translator(ctx, bot);
 });
 
+// Pin Message in group
+bot.command(["pin"], (ctx) => {
+  if (isAdmin(ctx.update.message.from.id)) {
+    pinMessage(ctx, bot);
+  } else {
+    return ctx.reply(
+      `@${
+        ctx.update.message.from.username
+          ? ctx.update.message.from.username
+          : ctx.update.message.from.first_name
+      }, You have no permissions to run this command!`
+    );
+  }
+});
+//
 // test
 // bot.hears(["test"], (ctx) => {
 //   console.log(ctx.update.message.from.id);
@@ -64,6 +80,6 @@ bot.command(["translate", "Translate", "T", "t"], (ctx) => {
 // });
 
 // Run Bad Words Filter Component
-badWordsFilter(bot);
+// badWordsFilter(bot);
 
 bot.launch();
