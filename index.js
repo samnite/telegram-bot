@@ -2,9 +2,10 @@ const { Telegraf } = require("telegraf");
 const { fetchData } = require("./components/covid");
 const { counterStrikeInfo } = require("./components/counterStrike");
 const { badWordsFilter } = require("./components/badWordsFilter");
+const { gallery } = require("./components/gallery");
+const { translator } = require("./components/translator");
 const { updateCovidData } = require("./util/updateCovidBase");
 const CronJob = require("cron").CronJob;
-const { gallery } = require("./components/gallery");
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
@@ -52,7 +53,7 @@ bot.command(["gallery", "Gallery", "G", "g"], (ctx) => {
 
 // Google Translator
 bot.command(["translate", "Translate", "T", "t"], (ctx) => {
-  gallery(ctx, bot);
+  translator(ctx, bot);
 });
 
 // test

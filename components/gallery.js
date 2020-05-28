@@ -27,8 +27,8 @@ const gallery = (ctx, bot) => {
       .then(toJson)
       .then((res) => {
         // Check empty response
-        if (res.length === 0) {
-          sendMessage(ctx, bot, "Sorry, nothing found...");
+        if (res.errors) {
+          sendMessage(ctx, bot, `Error: *${res.errors}*`);
           return null;
         }
         res.forEach((photo) => {
@@ -45,7 +45,6 @@ const gallery = (ctx, bot) => {
             [Download Image](${photo.links.download})
             👍 ${photo.likes}
                       `,
-            parse_mode: "Markdown",
           });
           unsplash.photos.downloadPhoto(photo);
         });

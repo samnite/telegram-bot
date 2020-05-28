@@ -1,4 +1,4 @@
-const sendMessage = (ctx, bot, msg) => {
+const sendMessage = (ctx, bot, msg, markdown = true) => {
   bot.telegram
     .sendMessage(
       ctx.update.message.chat.id,
@@ -7,7 +7,7 @@ const sendMessage = (ctx, bot, msg) => {
           ? ctx.update.message.from.username
           : ctx.update.message.from.first_name
       }, ${msg}`,
-      { parse_mode: "Markdown" }
+      { parse_mode: markdown ? "MarkDown" : null }
     )
     .then((info) => console.log(info))
     .catch((err) => console.log(err));
