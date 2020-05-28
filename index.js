@@ -50,6 +50,11 @@ bot.command(["gallery", "Gallery", "G", "g"], (ctx) => {
   gallery(ctx, bot);
 });
 
+// Google Translator
+bot.command(["translate", "Translate", "T", "t"], (ctx) => {
+  gallery(ctx, bot);
+});
+
 // test
 // bot.hears(["test"], (ctx) => {
 //   console.log(ctx.update.message.from.id);

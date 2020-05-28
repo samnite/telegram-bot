@@ -19,7 +19,13 @@ const updateCovidData = (bot) => {
       const data = JSON.stringify(res.data);
       fs.writeFile("./db/covidInfo.json", data, (i) => console.log(i));
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.log(err);
+      bot.telegram
+        .sendMessage("-1001307324588", `Schedule Update failed: ${err.message}`)
+        .then((info) => console.log(info))
+        .catch((err) => console.log(err));
+    });
 };
 
 module.exports = { updateCovidData };

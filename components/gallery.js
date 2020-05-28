@@ -19,25 +19,23 @@ const gallery = (ctx, bot) => {
     sendMessage(ctx, bot, msg);
 
     // Fetch all photos from unsplash server
-    unsplash.search
-      .photos(text)
+    unsplash.photos
+      .getRandomPhoto({
+        query: text,
+        count: 8,
+      })
       .then(toJson)
       .then((res) => {
         // Check empty response
-        if (res.total_pages === 0) {
+        if (res.length === 0) {
           sendMessage(ctx, bot, "Sorry, nothing found...");
           return null;
         }
-        unsplash.search
-          .photos(text, 1, 10)
-          .then(toJson)
-          .then((res) => {
-            const photos = res.results;
-            photos.forEach((photo) => {
-              urls.push({
-                type: "photo",
-                media: photo.urls.regular,
-                caption: `
+        res.forEach((photo) => {
+          urls.push({
+            type: "photo",
+            media: photo.urls.regular,
+            caption: `
                       *Title*: ${
                         photo.description
                           ? photo.description
@@ -47,33 +45,17 @@ const gallery = (ctx, bot) => {
             [Download Image](${photo.links.download})
             👍 ${photo.likes}
                       `,
-                parse_mode: "Markdown",
-              });
-              unsplash.photos.downloadPhoto(photo);
-            });
-            console.log("FUUUUUURLSSSS", urls); // TODO check when 50 requests ends
-            return ctx.telegram.sendMediaGroup(
-              ctx.update.message.chat.id,
-              urls,
-              {
-                reply_to_message_id: ctx.update.message.message_id,
-              }
-            );
-          })
-          .catch((err) => {
-            sendMessage(
-              ctx,
-              bot,
-              `Error: ${
-                err.code === 400
-                  ? "Maximum requests reached, try again later"
-                  : err.description
-              }`
-            );
+            parse_mode: "Markdown",
           });
+          unsplash.photos.downloadPhoto(photo);
+        });
+        return ctx.telegram.sendMediaGroup(ctx.update.message.chat.id, urls, {
+          reply_to_message_id: ctx.update.message.message_id,
+        });
       })
       .catch((err) => {
-        const msg = `Error: _${err.message}_`;
+        const msg = `Error: Something went wrong, try again later`;
+        console.log(err);
         sendMessage(ctx, bot, msg);
       });
   } else {
