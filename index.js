@@ -5,6 +5,7 @@ const { badWordsFilter } = require("./components/badWordsFilter");
 const { gallery } = require("./components/gallery");
 const { translator } = require("./components/translator");
 const { updateCovidData } = require("./util/updateCovidBase");
+const { isAdmin } = require("./util/utility");
 const CronJob = require("cron").CronJob;
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
@@ -33,7 +34,7 @@ bot.command(["cs", "Cs", "CS"], (ctx) => {
 
 // Manual Update Covid-9 Base
 bot.command(["update", "u", "U", "Update"], (ctx) => {
-  if (ctx.update.message.from.id === 605615617) {
+  if (isAdmin(ctx.update.message.from.id)) {
     updateCovidData(bot);
   } else {
     return ctx.reply(
