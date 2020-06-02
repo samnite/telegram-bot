@@ -1,8 +1,10 @@
 <component name="ProjectDictionaryState">
   <dictionary name="samnite">
     <words>
+      <w>appid</w>
       <w>axios</w>
       <w>covid</w>
+      <w>openweathermap</w>
       <w>telegraf</w>
       <w>unsplash</w>
     </words>

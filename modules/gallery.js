@@ -36,13 +36,13 @@ const gallery = (ctx, bot) => {
             type: "photo",
             media: photo.urls.regular,
             caption: `
-                      *Title*: ${
+                      Title: ${
                         photo.description
                           ? photo.description
                           : photo.alt_description
                       }
-            *Author*: [${photo.user.name}](${photo.user.links.html})
-            [Download Image](${photo.links.download})
+            Author: ${photo.user.name} (${photo.user.links.html})
+            Download Image: (${photo.links.download})
             👍 ${photo.likes}
                       `,
           });

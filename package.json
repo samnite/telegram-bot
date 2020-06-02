@@ -9,12 +9,14 @@
     "dev": "nodemon index.js"
   },
   "engines": {
-    "node": "12"
+    "node": "14"
   },
+  "type": "module",
   "dependencies": {
     "axios": "^0.19.2",
     "cron": "^1.8.2",
     "heroku": "^7.41.1",
+    "moment": "^2.26.0",
     "node-fetch": "^2.6.0",
     "nodemon": "^2.0.4",
     "prettier": "^2.0.5",
