@@ -35,8 +35,8 @@ Weather of *${data.name} (${data.sys.country})*:
         );
       })
       .catch((err) => {
-        console.log(err.message);
-        sendMessage(ctx, bot, err.response.message);
+        console.log(err.response);
+        sendMessage(ctx, bot, `⚠️ ${err.response.data.message}`);
       });
   } else {
     const msg = `please type your request to get weather in format */weather city_name*, example: \` /weather London\``;
