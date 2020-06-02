@@ -2,7 +2,7 @@ const counterStrikeInfo = (ctx) => {
   const text =
     "Counter-Strike Server IP: *104.199.71.150:27015*\n" +
     "Half-Life Server IP: *34.77.193.114:27015*\n" +
-    "Команда коннекта из консоли: ``` connect 34.77.193.114:27015;``` \n" +
+    "Команда коннекта из консоли: ` connect 34.77.193.114:27015;` \n" +
     "*Полезные ссылки:*\n" +
     "[Скачать клиент (Windows)](https://down-cs.su/clean.php)\n" +
     "[Скачать клиент (Mac)](https://rutracker.org/forum/viewtopic.php?t=5239713)\n" +

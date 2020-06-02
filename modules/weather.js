@@ -1,7 +1,7 @@
 const axios = require("axios");
 const { sendMessage } = require("../util/send-message");
 const { parseReq } = require("../util/utility");
-import moment from "moment";
+const moment = require("moment");
 
 if (process.env.NODE_ENV !== "production") require("dotenv").config();
 
@@ -12,17 +12,21 @@ const weather = (ctx, bot) => {
     axios
       .get(encodeURI(url))
       .then(({ data }) => {
-        console.log(data);
+        const sunrise = new Date(data.sys.sunrise * 1000);
+        const sunset = new Date(data.sys.sunset * 1000);
+        console.log(moment(data.sys.sunrise * 1000).format());
         const info = `@${
           ctx.update.message.from.username
             ? ctx.update.message.from.username
             : ctx.update.message.from.first_name
         },
-Weather Info of *${data.name} (${data.sys.country})*:
-Current temp: *${data.main.temp}°C* (feels like ${data.main.feels_like}°C)
-Humidity: ${data.main.humidity} %
-Cloudiness: ${data.weather[0].description}
-${moment(data.sys.sunrise).format("MMMM Do YYYY, h:mm:ss a")}
+Weather of *${data.name} (${data.sys.country})*:
+🌡️Temp: *${data.main.temp}°C* _(feels like ${data.main.feels_like}_°C)
+💧Humidity: ${data.main.humidity} %
+☁️Cloudiness: ${data.weather[0].description} (${data.clouds.all}%)
+💨Wind: ${data.wind.speed} m/s
+🌅Sunrise: ${moment(sunrise).format("HH:mm")} 
+🌇Sunset: ${moment(sunset).format("HH:mm")} 
                  `;
         return ctx.replyWithPhoto(
           `https://openweathermap.org/img/wn/${data.weather[0].icon}@4x.png`,
@@ -34,7 +38,7 @@ ${moment(data.sys.sunrise).format("MMMM Do YYYY, h:mm:ss a")}
         sendMessage(ctx, bot, err.message);
       });
   } else {
-    const msg = `please type your request to get weather in format */weather city_name*, example: \`\`\` /weather London\`\`\``;
+    const msg = `please type your request to get weather in format */weather city_name*, example: \` /weather London\``;
     sendMessage(ctx, bot, msg);
   }
 
