@@ -21,7 +21,7 @@ const gallery = (ctx, bot) => {
     // Fetch all photos from unsplash server
     unsplash.photos
       .getRandomPhoto({
-        query: text,
+        query: encodeURI(text),
         count: 8,
       })
       .then(toJson)
@@ -48,7 +48,7 @@ const gallery = (ctx, bot) => {
           });
           unsplash.photos.downloadPhoto(photo);
         });
-        return ctx.telegram.sendMediaGroup(ctx.update.message.chat.id, urls, {
+        return ctx.replyWithMediaGroup(urls, {
           reply_to_message_id: ctx.update.message.message_id,
         });
       })

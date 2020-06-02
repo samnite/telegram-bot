@@ -12,9 +12,6 @@ const weather = (ctx, bot) => {
     axios
       .get(encodeURI(url))
       .then(({ data }) => {
-        const sunrise = new Date(data.sys.sunrise * 1000);
-        const sunset = new Date(data.sys.sunset * 1000);
-        console.log(moment(data.sys.sunrise * 1000).format());
         const info = `@${
           ctx.update.message.from.username
             ? ctx.update.message.from.username
@@ -25,8 +22,9 @@ Weather of *${data.name} (${data.sys.country})*:
 💧Humidity: ${data.main.humidity} %
 ☁️Cloudiness: ${data.weather[0].description} (${data.clouds.all}%)
 💨Wind: ${data.wind.speed} m/s
-🌅Sunrise: ${moment(sunrise).format("HH:mm")} 
-🌇Sunset: ${moment(sunset).format("HH:mm")} 
+🕒Local time: ${moment(data.dt * 1000).format("HH:mm")}
+🌅Sunrise: ${moment(data.sys.sunrise * 1000).format("HH:mm")} 
+🌇Sunset: ${moment(data.sys.sunset * 1000).format("HH:mm")} 
 [See More...](https://openweathermap.org/city/${data.id})
                  `;
         return ctx.replyWithPhoto(
