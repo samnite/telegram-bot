@@ -27,7 +27,7 @@ Weather of *${data.name} (${data.sys.country})*:
 💨Wind: ${data.wind.speed} m/s
 🌅Sunrise: ${moment(sunrise).format("HH:mm")} 
 🌇Sunset: ${moment(sunset).format("HH:mm")} 
-[More info...](https://openweathermap.org/city/${data.id})
+[See More...](https://openweathermap.org/city/${data.id})
                  `;
         return ctx.replyWithPhoto(
           `https://openweathermap.org/img/wn/${data.weather[0].icon}@4x.png`,
