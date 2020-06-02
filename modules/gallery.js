@@ -11,12 +11,12 @@ const unsplash = new Unsplash({
   accessKey: process.env.UNSPLASH_ACCESS_KEY,
 });
 
-const gallery = (ctx, bot) => {
+const gallery = (ctx) => {
   const text = parseReq(ctx.update.message.text);
   let urls = [];
   if (text.length > 1) {
     const msg = `Searching for *"${text}"* photos, request can take up to 60 seconds, please wait...`;
-    sendMessage(ctx, bot, msg);
+    sendMessage(ctx, msg);
 
     // Fetch all photos from unsplash server
     unsplash.photos
@@ -28,7 +28,7 @@ const gallery = (ctx, bot) => {
       .then((res) => {
         // Check empty response
         if (res.errors) {
-          sendMessage(ctx, bot, `Error: *${res.errors}*`);
+          sendMessage(ctx, `Error: *${res.errors}*`);
           return null;
         }
         res.forEach((photo) => {
@@ -54,12 +54,11 @@ const gallery = (ctx, bot) => {
       })
       .catch((err) => {
         const msg = `Error: Something went wrong, try again later`;
-        console.log(err);
-        sendMessage(ctx, bot, msg);
+        sendMessage(ctx, msg);
       });
   } else {
     const msg = `please type your request to search photos in format */gallery search_request*, example: \`\`\` /gallery cool cats\`\`\``;
-    sendMessage(ctx, bot, msg);
+    sendMessage(ctx, msg);
   }
 };
 

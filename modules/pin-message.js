@@ -1,16 +1,16 @@
 const { parseReq } = require("../util/utility");
 
-const pinMessage = (ctx, bot) => {
+const pinMessage = (ctx) => {
   const text = parseReq(ctx.update.message.text);
   console.log(ctx.update.message.chat.id);
 
-  bot.telegram
+  ctx.telegram
     .sendMessage(ctx.update.message.chat.id, text, {
       parse_mode: "Markdown",
     })
     .then((res) => {
       console.log(res);
-      bot.telegram.pinChatMessage(ctx.update.message.chat.id, res.message_id, {
+      ctx.telegram.pinChatMessage(ctx.update.message.chat.id, res.message_id, {
         disable_notification: false,
       });
     })

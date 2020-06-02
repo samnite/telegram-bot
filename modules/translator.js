@@ -4,7 +4,7 @@ const { parseReq } = require("../util/utility");
 
 if (process.env.NODE_ENV !== "production") require("dotenv").config();
 
-const translator = (ctx, bot) => {
+const translator = (ctx) => {
   const text = parseReq(ctx.update.message.text);
   if (text.length > 1) {
     axios
@@ -19,7 +19,7 @@ const translator = (ctx, bot) => {
         const data = res.data.data.translations; // Array
         console.log(res.data.data);
         if (data[0].detectedSourceLanguage === "en") {
-          sendMessage(ctx, bot, data[0].translatedText, false);
+          sendMessage(ctx, data[0].translatedText, false);
         } else {
           axios
             .post(
@@ -29,14 +29,13 @@ const translator = (ctx, bot) => {
             .then((res) => {
               const data = res.data.data.translations; // Array
               console.log(res.data.data);
-              sendMessage(ctx, bot, data[0].translatedText, false);
+              sendMessage(ctx, data[0].translatedText, false);
             });
         }
       });
   } else {
     sendMessage(
       ctx,
-      bot,
       `please type your request to translating in format */translate search_request*, example: \`\`\` /translate translate me\`\`\``
     );
   }

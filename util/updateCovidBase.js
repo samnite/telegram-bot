@@ -1,14 +1,14 @@
 const axios = require("axios");
 const fs = require("fs");
 
-const updateCovidData = (bot) => {
+const updateCovidData = (ctx) => {
   axios
     .get("https://api.covid19api.com/summary")
     .then((res) => {
       const date = new Date();
 
       // Send Message
-      bot.telegram
+      ctx.telegram
         .sendMessage(
           "-1001307324588",
           `Covid-19 Database Successfully Updated : ${date}`
@@ -21,7 +21,7 @@ const updateCovidData = (bot) => {
     })
     .catch((err) => {
       console.log(err);
-      bot.telegram
+      ctx.telegram
         .sendMessage("-1001307324588", `Schedule Update failed: ${err.message}`)
         .then((info) => console.log(info))
         .catch((err) => console.log(err));

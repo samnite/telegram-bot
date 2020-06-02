@@ -1,5 +1,5 @@
-const sendMessage = (ctx, bot, msg, markdown = true) => {
-  bot.telegram
+const sendMessage = (ctx, msg, markdown = true) => {
+  ctx.telegram
     .sendMessage(
       ctx.update.message.chat.id,
       `@${

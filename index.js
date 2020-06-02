@@ -12,8 +12,9 @@ const { isAdmin } = require("./util/utility");
 // test stuff
 const session = require("telegraf/session");
 const Stage = require("telegraf/stage");
-const Scene = require("telegraf/scenes/base");
-const { enter, leave } = Stage;
+// const Scene = require("telegraf/scenes/base");
+const { weatherScene } = require("./modules/scenes");
+// const { enter, leave } = Stage;
 // test stuff
 const CronJob = require("cron").CronJob;
 
@@ -28,19 +29,12 @@ job.start();
 
 // Keyboard element start
 // Greeter scene
-const greeterScene = new Scene("greeter");
-greeterScene.enter(() => console.log("Hi"));
-greeterScene.leave(() => console.log("Bye"));
-greeterScene.command("back", leave());
-greeterScene.hears("hi", enter("greeter"));
-greeterScene.on("message", (ctx) => {
-  ctx.reply("Thank You");
-  ctx.scene.leave();
-});
+
 bot.use(session());
-const stage = new Stage([greeterScene]);
+const stage = new Stage([weatherScene]);
 bot.use(stage.middleware());
-bot.command("test", (ctx) => ctx.scene.enter("greeter"));
+
+bot.command("test", (ctx) => ctx.scene.enter("weather"));
 bot.command("testtttttt", (ctx) => {
   console.log(ctx.editedMessage);
   // bot.telegram
@@ -72,7 +66,7 @@ bot.command(["cs", "Cs", "CS"], (ctx) => {
 // Manual Update Covid-9 Base
 bot.command(["update", "u", "U", "Update"], (ctx) => {
   if (isAdmin(ctx.update.message.from.id)) {
-    updateCovidData(bot);
+    updateCovidData(ctx);
   } else {
     return ctx.reply(
       `@${
@@ -86,18 +80,18 @@ bot.command(["update", "u", "U", "Update"], (ctx) => {
 
 // Gallery
 bot.command(["gallery", "Gallery", "G", "g"], (ctx) => {
-  gallery(ctx, bot);
+  gallery(ctx);
 });
 
 // Google Translator
 bot.command(["translate", "Translate", "T", "t"], (ctx) => {
-  translator(ctx, bot);
+  translator(ctx);
 });
 
 // Pin Message in group
 bot.command(["pin"], (ctx) => {
   if (isAdmin(ctx.update.message.from.id)) {
-    pinMessage(ctx, bot);
+    pinMessage(ctx);
   } else {
     return ctx.reply(
       `@${
@@ -111,15 +105,8 @@ bot.command(["pin"], (ctx) => {
 
 // Weather component
 bot.command(["w", "W", "weather", "Weather"], (ctx) => {
-  weather(ctx, bot);
+  weather(ctx);
 });
-
-//
-// test
-// bot.hears(["test"], (ctx) => {
-//   console.log(ctx.update.message.from.id);
-//   gallery(ctx);
-// });
 
 // Run Bad Words Filter Component
 // badWordsFilter(bot);

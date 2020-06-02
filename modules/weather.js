@@ -5,7 +5,7 @@ const moment = require("moment");
 
 if (process.env.NODE_ENV !== "production") require("dotenv").config();
 
-const weather = (ctx, bot) => {
+const weather = (ctx) => {
   const text = parseReq(ctx.update.message.text);
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${text}&appid=${process.env.WEATHER_KEY}&units=metric&lang=en`;
   if (text.length > 1) {
@@ -34,11 +34,13 @@ Weather of *${data.name} (${data.sys.country})*:
       })
       .catch((err) => {
         console.log(err.response);
-        sendMessage(ctx, bot, `⚠️ ${err.response.data.message}`);
+        sendMessage(ctx, `⚠️ ${err.response.data.message}`);
       });
   } else {
-    const msg = `please type your request to get weather in format */weather city_name*, example: \` /weather London\``;
-    sendMessage(ctx, bot, msg);
+    sendMessage(
+      ctx,
+      `please type your request to get weather in format */weather city_name*, example: \` /weather London\``
+    );
   }
 
   // const keyboard = {
