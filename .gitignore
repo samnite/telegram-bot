@@ -26,3 +26,4 @@ yarn-error.log*
 !/.firebase/
 /.firebase/
 !/src/components/layout/test.js
+/tests/

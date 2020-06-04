@@ -5,9 +5,11 @@ const moment = require("moment");
 
 if (process.env.NODE_ENV !== "production") require("dotenv").config();
 
-const weather = (ctx) => {
+const weather = (ctx, isButton = false) => {
   const text = parseReq(ctx.update.message.text);
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${text}&appid=${process.env.WEATHER_KEY}&units=metric&lang=en`;
+  const url = isButton
+    ? `https://api.openweathermap.org/data/2.5/weather?q=${ctx.update.message.text}&appid=${process.env.WEATHER_KEY}&units=metric&lang=en`
+    : `https://api.openweathermap.org/data/2.5/weather?q=${text}&appid=${process.env.WEATHER_KEY}&units=metric&lang=en`;
   if (text.length > 1) {
     axios
       .get(encodeURI(url))
@@ -18,7 +20,9 @@ const weather = (ctx) => {
             : ctx.update.message.from.first_name
         },
 Weather of *${data.name} (${data.sys.country})*:
-🌡️Temp: *${data.main.temp}°C* _(feels like ${data.main.feels_like}_°C)
+🌡️Temp: *${Math.round(data.main.temp)}°C* _(feels like ${Math.round(
+          data.main.feels_like
+        )}_°C)
 💧Humidity: ${data.main.humidity} %
 ☁️Cloudiness: ${data.weather[0].description} (${data.clouds.all}%)
 💨Wind: ${data.wind.speed} m/s
