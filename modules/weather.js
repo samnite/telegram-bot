@@ -14,6 +14,18 @@ const weather = (ctx, isButton = false) => {
     axios
       .get(encodeURI(url))
       .then(({ data }) => {
+        // Init time calculation
+        const timeShift = 10800; // Your server UNIX timezone, enter 0 if using Greenwich Mean Time Zone
+        const localTime = moment(
+          (data.dt + data.timezone - timeShift) * 1000
+        ).format("HH:mm");
+        const sunrise = moment(
+          (data.sys.sunrise + data.timezone - timeShift) * 1000
+        ).format("HH:mm");
+        const sunset = moment(
+          (data.sys.sunset + data.timezone - timeShift) * 1000
+        ).format("HH:mm");
+
         const info = `@${
           ctx.update.message.from.username
             ? ctx.update.message.from.username
@@ -26,10 +38,10 @@ Weather of *${data.name} (${data.sys.country})*:
 💧Humidity: ${data.main.humidity} %
 ☁️Cloudiness: ${data.weather[0].description} (${data.clouds.all}%)
 💨Wind: ${data.wind.speed} m/s
-🕒Local time: ${moment(data.dt * 1000).format("HH:mm")}
-🌅Sunrise: ${moment(data.sys.sunrise * 1000).format("HH:mm")} 
-🌇Sunset: ${moment(data.sys.sunset * 1000).format("HH:mm")} 
-[See More...](https://openweathermap.org/city/${data.id})
+🕒Local time: ${localTime}
+🌅Sunrise: ${sunrise} 
+🌇Sunset: ${sunset} 
+[See More...➡️](https://openweathermap.org/city/${data.id})
                  `;
         return ctx.replyWithPhoto(
           `https://openweathermap.org/img/wn/${data.weather[0].icon}@4x.png`,
