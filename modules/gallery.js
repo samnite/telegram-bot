@@ -15,7 +15,7 @@ const gallery = (ctx) => {
   const text = parseReq(ctx.update.message.text);
   let urls = [];
   if (text.length > 1) {
-    const msg = `Searching for *"${text}"* photos, request can take up to 60 seconds, please wait...`;
+    const msg = `Searching for <b>"${text}"</b> photos, request can take up to 60 seconds, please wait...`;
     sendMessage(ctx, msg);
 
     // Fetch all photos from unsplash server
@@ -28,7 +28,7 @@ const gallery = (ctx) => {
       .then((res) => {
         // Check empty response
         if (res.errors) {
-          sendMessage(ctx, `Error: *${res.errors}*`);
+          sendMessage(ctx, `Error: <b>${res.errors}</b>`);
           return null;
         }
         res.forEach((photo) => {
@@ -57,7 +57,7 @@ const gallery = (ctx) => {
         sendMessage(ctx, msg);
       });
   } else {
-    const msg = `please type your request to search photos in format */gallery search_request*, example: \`\`\` /gallery cool cats\`\`\``;
+    const msg = `please type your request to search photos in format <b>/gallery search_request</b>, example: <code> /gallery cats</code>`;
     sendMessage(ctx, msg);
   }
 };

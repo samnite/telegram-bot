@@ -35,22 +35,24 @@ const fetchData = (ctx) => {
             : ctx.update.message.from.first_name
         }, 
 COVID-19 Worldwide statistics:
-Confirmed cases: *${TotalConfirmed}* (+_${NewConfirmed}_)
-Death cases: *${TotalDeaths}* (+_${NewDeaths}_)
-Recovered: *${TotalRecovered}* (+_${NewRecovered}_)        
+Confirmed cases: <b>${TotalConfirmed}</b> (+<i>${NewConfirmed}</i>)
+Death cases: <b>${TotalDeaths}</b> (+<i>${NewDeaths}</i>)
+Recovered: <b>${TotalRecovered}</b> (+<i>${NewRecovered}</i>)        
         ${
           country
             ? `
-Statistics by country *${text[0].toUpperCase() + text.slice(1)}*:
-Confirmed cases: *${country.TotalConfirmed}* (+_${country.NewConfirmed}_)
-Death cases: *${country.TotalDeaths}* (+_${country.NewDeaths}_)
-Recovered: *${country.TotalRecovered}* (+_${country.NewRecovered}_)
+Statistics by country <b>${text[0].toUpperCase() + text.slice(1)}</b>:
+Confirmed cases: <b>${country.TotalConfirmed}</b> (+<i>${
+                country.NewConfirmed
+              }</i>)
+Death cases: <b>${country.TotalDeaths}</b> (+<i>${country.NewDeaths}</i>)
+Recovered: <b>${country.TotalRecovered}</b> (+<i>${country.NewRecovered}</i>)
          `
             : ""
         }
          `,
         {
-          parse_mode: "markdown",
+          parse_mode: "HTML",
         }
       );
     }

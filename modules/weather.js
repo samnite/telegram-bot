@@ -25,27 +25,28 @@ const weather = (ctx, isButton = false) => {
         const sunset = moment(
           (data.sys.sunset + data.timezone - timeShift) * 1000
         ).format("HH:mm");
+        const link = `"https://openweathermap.org/city/${data.id}"`;
 
         const info = `@${
           ctx.update.message.from.username
             ? ctx.update.message.from.username
             : ctx.update.message.from.first_name
         },
-Weather of *${data.name} (${data.sys.country})*:
-🌡️Temp: *${Math.round(data.main.temp)}°C* _(feels like ${Math.round(
+Weather of <b>${data.name} (${data.sys.country})</b>:
+🌡️Temp: <b>${Math.round(data.main.temp)}°C</b> <i>(feels like ${Math.round(
           data.main.feels_like
-        )}_°C)
+        )}</i>°C)
 💧Humidity: ${data.main.humidity} %
 ☁️Cloudiness: ${data.weather[0].description} (${data.clouds.all}%)
 💨Wind: ${data.wind.speed} m/s
 🕒Local time: ${localTime}
 🌅Sunrise: ${sunrise} 
 🌇Sunset: ${sunset} 
-[See More...➡️](https://openweathermap.org/city/${data.id})
+<a href=${link}>See More...➡️</a>
                  `;
         return ctx.replyWithPhoto(
           `https://openweathermap.org/img/wn/${data.weather[0].icon}@4x.png`,
-          { caption: info, parse_mode: "Markdown" }
+          { caption: info, parse_mode: "HTML" }
         );
       })
       .catch((err) => {
@@ -55,7 +56,7 @@ Weather of *${data.name} (${data.sys.country})*:
   } else {
     sendMessage(
       ctx,
-      `please type your request to get weather in format */weather city_name*, example: \` /weather London\``
+      `please type your request to get weather in format <b>/weather city_name </b>, example: <code> /weather London</code>`
     );
   }
 

@@ -36,7 +36,7 @@ const translator = (ctx) => {
   } else {
     sendMessage(
       ctx,
-      `please type your request to translating in format */translate search_request*, example: \`\`\` /translate translate me\`\`\``
+      `please type your request to translating in format <b>/translate search_request</b>, example: <code> /translate translate me</code>`
     );
   }
 };
