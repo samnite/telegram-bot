@@ -12,46 +12,24 @@ const { isAdmin } = require("./util/utility");
 // test stuff
 const session = require("telegraf/session");
 const Stage = require("telegraf/stage");
-// const Scene = require("telegraf/scenes/base");
 const { weatherScene } = require("./modules/scenes");
-// const { enter, leave } = Stage;
-// test stuff
 const CronJob = require("cron").CronJob;
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
 // Cron task
-const job = new CronJob("0 0 */6 * * *", function () {
+const job = new CronJob("0 0 */8 * * *", function () {
   // Update Covid-19 Database
   updateCovidData(bot);
 });
 job.start();
 
-// Keyboard element start
 // Greeter scene
-
 bot.use(session());
 const stage = new Stage([weatherScene]);
 bot.use(stage.middleware());
 
-bot.command("test", (ctx) => ctx.scene.enter("weather"));
-bot.command("testtttttt", (ctx) => {
-  console.log(ctx.editedMessage);
-  // bot.telegram
-  //   .sendMessage(ctx.update.message.chat.id, `Enter City`, {
-  //     parse_mode: "Markdown",
-  //   })
-  //   .then((info) => {
-  //     console.log(info);
-  //
-  //     bot.on("message", (context) => {
-  //       console.log(context);
-  //       return context.reply("Thank you");
-  //     });
-  //   })
-  //   .catch((err) => console.log(err));
-});
-// Keyboard element end
+bot.command(["test", "wb"], (ctx) => ctx.scene.enter("weather"));
 
 // Run Covid-19 component
 bot.command(["corona", "c", "Corona", "C"], (ctx) => {

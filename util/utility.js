@@ -5,7 +5,7 @@ if (process.env.NODE_ENV !== "production")
 const parseReq = (req) => {
   const text = req.split(" ");
   if (text.length === 1) {
-    return text; // [string]
+    return text; // string[]
   }
   text.shift();
   return text.join(" "); // string
