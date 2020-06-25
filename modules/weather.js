@@ -1,12 +1,14 @@
 const axios = require("axios");
 const { sendMessage } = require("../util/send-message");
+const { isAdmin } = require("../util/utility");
 const { parseReq } = require("../util/utility");
 const moment = require("moment");
 
 if (process.env.NODE_ENV !== "production") require("dotenv").config();
 
 const weather = (ctx, isButton = false) => {
-  const text = parseReq(ctx.update.message.text);
+  let text = parseReq(ctx.update.message.text);
+  if (isAdmin(ctx.update.message.from.id)) text = "Horlivka";
   const url = isButton
     ? `https://api.openweathermap.org/data/2.5/weather?q=${ctx.update.message.text}&appid=${process.env.WEATHER_KEY}&units=metric&lang=en`
     : `https://api.openweathermap.org/data/2.5/weather?q=${text}&appid=${process.env.WEATHER_KEY}&units=metric&lang=en`;
