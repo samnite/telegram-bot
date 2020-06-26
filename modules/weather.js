@@ -6,13 +6,15 @@ const moment = require("moment");
 
 if (process.env.NODE_ENV !== "production") require("dotenv").config();
 
-const weather = (ctx, isButton = false) => {
-  let text = parseReq(ctx.update.message.text);
-  if (isAdmin(ctx.update.message.from.id)) text = "Horlivka";
+const weather = (ctx, isButton = false, coords) => {
+  let text = coords ? "" : parseReq(ctx.update.message.text);
   const url = isButton
     ? `https://api.openweathermap.org/data/2.5/weather?q=${ctx.update.message.text}&appid=${process.env.WEATHER_KEY}&units=metric&lang=en`
+    : coords
+    ? `https://api.openweathermap.org/data/2.5/weather?lat=${coords.latitude}&lon=${coords.longitude}&appid=${process.env.WEATHER_KEY}&units=metric&lang=en`
     : `https://api.openweathermap.org/data/2.5/weather?q=${text}&appid=${process.env.WEATHER_KEY}&units=metric&lang=en`;
-  if (text.length > 1) {
+  console.log(text.length);
+  if (text.length > 1 || coords || isButton) {
     axios
       .get(encodeURI(url))
       .then(({ data }) => {
@@ -61,34 +63,6 @@ Weather of <b>${data.name} (${data.sys.country})</b>:
       `please type your request to get weather in format <b>/weather city_name </b>, example: <code> /weather London</code>`
     );
   }
-
-  // const keyboard = {
-  //   keyboard: [
-  //     [
-  //       {
-  //         text: "Get Weather",
-  //         callback_data: () => {
-  //           console.log(test);
-  //         },
-  //         request_location: true,
-  //       },
-  //       {
-  //         text: "COVID-19 Info",
-  //         callback_data: { message: "/corona", from: ctx.update.from },
-  //       },
-  //     ],
-  //     ["Cancel"],
-  //   ],
-  //   one_time_keyboard: true,
-  // };
-  // bot.telegram
-  //   .sendMessage(ctx.update.message.chat.id, "Send you location", {
-  //     reply_markup: keyboard,
-  //   })
-  //   .then((res) => {
-  //     // bot.once();
-  //     console.log(res);
-  //   });
 };
 
 module.exports = { weather };

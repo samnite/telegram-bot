@@ -11,8 +11,10 @@ const unsplash = new Unsplash({
   accessKey: process.env.UNSPLASH_ACCESS_KEY,
 });
 
-const gallery = (ctx) => {
-  const text = parseReq(ctx.update.message.text);
+const gallery = (ctx, isButton = false) => {
+  const text = isButton
+    ? ctx.update.message.text
+    : parseReq(ctx.update.message.text);
   let urls = [];
   if (text.length > 1) {
     const msg = `Searching for <b>"${text}"</b> photos, request can take up to 60 seconds, please wait...`;

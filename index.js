@@ -12,8 +12,13 @@ const { isAdmin } = require("./util/utility");
 // test stuff
 const session = require("telegraf/session");
 const Stage = require("telegraf/stage");
-const { weatherScene } = require("./modules/scenes");
+const {
+  weatherScene,
+  translatorScene,
+  galleryScene,
+} = require("./modules/scenes");
 const CronJob = require("cron").CronJob;
+const { Router, Markup } = Telegraf;
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
@@ -24,12 +29,41 @@ const job = new CronJob("0 0 */8 * * *", function () {
 });
 job.start();
 
-// Greeter scene
+// test
+const mainKeyboard = Markup.keyboard([
+  ["⛅ Weather", Markup.locationRequestButton("⛅ Weather (autodetect)")],
+  ["🇺🇸 Translate", "🖼️ Gallery"], // Row1 with 2 buttons
+  ["🦠 Corona Info", "⌛ Soon"], // Row2 with 2 buttons
+])
+  .oneTime()
+  .resize()
+  .extra();
+
+// Scenes
 bot.use(session());
-const stage = new Stage([weatherScene]);
+const stage = new Stage([weatherScene, translatorScene, galleryScene]);
 bot.use(stage.middleware());
 
-bot.command(["test", "wb"], (ctx) => ctx.scene.enter("weather"));
+bot.hears("⛅ Weather", (ctx) => {
+  return ctx.scene.enter("weather");
+});
+bot.hears("🇺🇸 Translate", (ctx) => {
+  return ctx.scene.enter("translator");
+});
+bot.hears("🖼️ Gallery", (ctx) => {
+  return ctx.scene.enter("gallery");
+});
+bot.hears("🦠 Corona Info", (ctx) => {
+  fetchData(ctx);
+});
+
+bot.command(["start"], (ctx) => {
+  ctx.telegram.sendMessage(
+    ctx.from.id,
+    `Hello ${ctx.from.first_name}`,
+    mainKeyboard
+  );
+});
 
 // Run Covid-19 component
 bot.command(["corona", "c", "Corona", "C"], (ctx) => {
@@ -84,6 +118,13 @@ bot.command(["pin"], (ctx) => {
 // Weather component
 bot.command(["w", "W", "weather", "Weather"], (ctx) => {
   weather(ctx);
+});
+
+bot.on("message", (ctx) => {
+  if (ctx.update.message.location) {
+    console.log(ctx.update.message.location);
+    weather(ctx, false, ctx.update.message.location);
+  }
 });
 
 // Run Bad Words Filter Component

@@ -4,8 +4,10 @@ const { parseReq } = require("../util/utility");
 
 if (process.env.NODE_ENV !== "production") require("dotenv").config();
 
-const translator = (ctx) => {
-  const text = parseReq(ctx.update.message.text);
+const translator = (ctx, isButton = false) => {
+  const text = isButton
+    ? ctx.update.message.text
+    : parseReq(ctx.update.message.text);
   if (text.length > 1) {
     axios
       .post(
