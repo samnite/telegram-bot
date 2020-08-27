@@ -7,6 +7,7 @@ const updateCovidData = (ctx) => {
     .then((res) => {
       const date = new Date();
       console.log("Base updated successfully");
+      // Just placeholder to test commit
       // Send Message
       // ctx.telegram
       //   .sendMessage(
