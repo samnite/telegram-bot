@@ -1,5 +1,7 @@
 if (process.env.NODE_ENV !== "production")
   require("dotenv").config({ path: "..\\.env" });
+  
+// Placeholder
 
 // Split user command and user request
 const parseReq = (req) => {
