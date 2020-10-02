@@ -1,6 +1,7 @@
 const { parseReq } = require("../../util/utility");
 const db = require("../db").mysql_pool;
 const moment = require("moment");
+const { amountFormat } = require("../../util/utility");
 
 const fetchData = (ctx, button = false) => {
 	let text = parseReq(ctx.update.message.text);
@@ -25,9 +26,15 @@ const fetchData = (ctx, button = false) => {
 							: ctx.update.message.from.first_name
 					},
 	COVID-19 Worldwide statistics:
-	Confirmed cases: <b>${total_confirmed}</b> (+<i>${new_confirmed}</i>)
-	Death cases: <b>${total_deaths}</b> (+<i>${new_deaths}</i>)
-	Recovered: <b>${total_recovered}</b> (+<i>${new_recovered}</i>)
+	Confirmed cases: <b>${amountFormat(total_confirmed, ",")}</b> (+<i>${amountFormat(
+						new_confirmed,
+						","
+					)}</i>)
+	Death cases: <b>${amountFormat(total_deaths, ",")}</b> (+<i>${amountFormat(new_deaths, ",")}</i>)
+	Recovered: <b>${amountFormat(total_recovered, ",")}</b> (+<i>${amountFormat(
+						new_recovered,
+						","
+					)}</i>)
 	Base updated: <b>${moment(date).format("LLL")}</b>
 	         `,
 					{
@@ -62,9 +69,15 @@ const fetchData = (ctx, button = false) => {
 								: ctx.update.message.from.first_name
 						},
 Statistics by country <b>${text[0].toUpperCase() + text.slice(1)}</b>:
-Confirmed cases: <b>${total_confirmed}</b> (+<i>${new_confirmed}</i>)
-Death cases: <b>${total_deaths}</b> (+<i>${new_deaths}</i>)
-Recovered: <b>${total_recovered}</b> (+<i>${new_recovered}</i>)
+Confirmed cases: <b>${amountFormat(total_confirmed, ",")}</b> (+<i>${amountFormat(
+							new_confirmed,
+							","
+						)}</i>)
+Death cases: <b>${amountFormat(total_deaths, ",")}</b> (+<i>${amountFormat(new_deaths, ",")}</i>)
+Recovered: <b>${amountFormat(total_recovered, ",")}</b> (+<i>${amountFormat(
+							new_recovered,
+							","
+						)}</i>)
                    `,
 						{
 							parse_mode: "HTML",
