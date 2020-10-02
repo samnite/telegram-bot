@@ -16,7 +16,7 @@ const Stage = require("telegraf/stage");
 const { weatherScene, translatorScene, galleryScene } = require("./modules/scenes");
 const CronJob = require("cron").CronJob;
 const { Router, Markup } = Telegraf;
-const messageCounter = require("./modules/messageCounter");
+const { messageCounter, messageStats } = require("./modules/messageCounter");
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
@@ -112,6 +112,13 @@ bot.command(["pin"], (ctx) => {
 // Weather component
 bot.command(["w", "W", "weather", "Weather"], (ctx) => {
 	weather(ctx);
+});
+
+// Show message counter by group
+bot.command(["stats", "Stats"], (ctx) => {
+	if (ctx.update.message.chat.type === "supergroup") {
+		messageStats(ctx);
+	}
 });
 
 bot.on("message", (ctx) => {
