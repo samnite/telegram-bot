@@ -2,11 +2,11 @@ const { parseReq } = require("../../util/utility");
 const db = require("../db").mysql_pool;
 const moment = require("moment");
 
-const fetchData = (ctx) => {
+const fetchData = (ctx, button = false) => {
 	let text = parseReq(ctx.update.message.text);
 	if (text.length > 1) text = text.toLowerCase();
 	db.getConnection(function (err, connection) {
-		if (text.length === 1) {
+		if (text.length === 1 || button) {
 			connection.query("SELECT * FROM covid_global WHERE id = 1", (err, res) => {
 				if (err) console.log(err);
 				const {

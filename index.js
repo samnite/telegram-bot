@@ -52,7 +52,7 @@ bot.hears("🖼️ Gallery", (ctx) => {
 	return ctx.scene.enter("gallery");
 });
 bot.hears("🦠 Corona Info", (ctx) => {
-	fetchData(ctx);
+	fetchData(ctx, true);
 });
 
 bot.command(["start"], (ctx) => {

@@ -41,7 +41,7 @@ const updateCovidData = async (ctx) => {
 			);
 		});
 		db.getConnection((err, connection) => {
-			connection.query(updateQueries, (err) => console.log(err));
+			connection.query(updateQueries, (err, res) => console.log(res));
 		});
 	}
 };
