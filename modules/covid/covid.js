@@ -1,5 +1,5 @@
-const { parseReq } = require("../util/utility");
-const db = require("../modules/db").mysql_pool;
+const { parseReq } = require("../../util/utility");
+const db = require("../db").mysql_pool;
 const moment = require("moment");
 
 const fetchData = (ctx) => {

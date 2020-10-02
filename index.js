@@ -1,14 +1,14 @@
 const { sendMessage } = require("./util/send-message");
 const { weather } = require("./modules/weather");
 const { Telegraf } = require("telegraf");
-const { fetchData } = require("./modules/covid");
+const { fetchData } = require("./modules/covid/covid");
 const { pinMessage } = require("./modules/pin-message");
 const { counterStrikeInfo } = require("./modules/counterStrike");
 // const { badWordsFilter } = require("./modules/badWordsFilter");
 const db = require("./modules/db").mysql_pool;
 const { gallery } = require("./modules/gallery");
 const { translator } = require("./modules/translator");
-const { updateCovidData } = require("./util/updateCovidBase");
+const { updateCovidData } = require("./modules/covid/updateCovidBase");
 const { isAdmin } = require("./util/utility");
 // test stuff
 const session = require("telegraf/session");

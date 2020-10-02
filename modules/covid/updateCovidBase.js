@@ -1,5 +1,5 @@
 const axios = require("axios");
-const db = require("../modules/db").mysql_pool;
+const db = require("../db").mysql_pool;
 const mysql = require("mysql");
 
 const updateCovidData = async (ctx) => {
