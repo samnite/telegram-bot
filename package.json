@@ -1,29 +1,29 @@
 {
-  "name": "telegram-bot",
-  "version": "1.0.0",
-  "main": "index.js",
-  "author": "samnite",
-  "license": "MIT",
-  "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js"
-  },
-  "engines": {
-    "node": "14"
-  },
-  "dependencies": {
-    "axios": "^0.19.2",
-    "cron": "^1.8.2",
-    "heroku": "^7.41.1",
-    "moment": "^2.26.0",
-    "mysql": "^2.18.1",
-    "node-fetch": "^2.6.0",
-    "nodemon": "^2.0.4",
-    "prettier": "^2.0.5",
-    "telegraf": "^3.38.0",
-    "unsplash-js": "^6.0.0"
-  },
-  "devDependencies": {
-    "dotenv": "^8.2.0"
-  }
+	"name": "telegram-bot",
+	"version": "1.0.0",
+	"main": "index.js",
+	"author": "samnite",
+	"license": "MIT",
+	"scripts": {
+		"start": "node index.js",
+		"dev": "nodemon index.js"
+	},
+	"engines": {
+		"node": "12"
+	},
+	"dependencies": {
+		"axios": "^0.19.2",
+		"cron": "^1.8.2",
+		"heroku": "^7.41.1",
+		"moment": "^2.26.0",
+		"mysql": "^2.18.1",
+		"node-fetch": "^2.6.0",
+		"nodemon": "^2.0.4",
+		"prettier": "^2.0.5",
+		"telegraf": "^3.38.0",
+		"unsplash-js": "^6.0.0"
+	},
+	"devDependencies": {
+		"dotenv": "^8.2.0"
+	}
 }
