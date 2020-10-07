@@ -4,6 +4,7 @@ const { fetchData } = require("./modules/covid/covid");
 const { gallery } = require("./modules/gallery");
 const { translator } = require("./modules/translator");
 const { updateCovidData } = require("./modules/covid/updateCovidBase");
+const { addUserToBase } = require("./modules/users");
 const { isAdmin } = require("./util/utility");
 
 const session = require("telegraf/session");
@@ -101,6 +102,7 @@ bot.command(["stats", "Stats"], (ctx) => {
 });
 
 bot.on("message", (ctx) => {
+	addUserToBase(ctx);
 	if (ctx.update.message.location) {
 		weather(ctx, false, ctx.update.message.location);
 	}
