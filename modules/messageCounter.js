@@ -21,4 +21,60 @@ const messageStats = (ctx) => {
 	});
 };
 
-module.exports = { messageCounter, messageStats };
+const globalGroupStats = (ctx) => {
+	db.getConnection((err, connection) => {
+		const { message } = ctx.update;
+		connection.query(`SELECT * FROM messages WHERE group_id = ${message.chat.id}`, (err, res) => {
+			const data = res;
+			const stats = {};
+			let msgString = "";
+			if (data) {
+				let curUser = "";
+				data.forEach((msg) => {
+					if (msg.user_id !== curUser) {
+						if (stats.hasOwnProperty(msg.user_id)) {
+							stats[msg.user_id] = {
+								...stats[msg.user_id],
+								count: stats[msg.user_id].count + 1,
+							};
+						} else {
+							stats[msg.user_id] = {
+								count: 1,
+								username: msg.username,
+								firstName: msg.first_name,
+								lastName: msg.last_name,
+							};
+						}
+						curUser = msg.user_id;
+					} else {
+						stats[msg.user_id] = {
+							...stats[msg.user_id],
+							count: stats[msg.user_id].count + 1,
+						};
+					}
+				});
+			}
+			Object.values(stats)
+				.sort((a, b) => a.count - b.count)
+				.reverse()
+				.map((user, idx) => {
+					if (idx <= 10) {
+						msgString +=
+							`<b>${idx + 1}</b>. ${user.username && `@${user.username}`} ${
+								user.firstName && user.firstName
+							} ${user.lastName !== "undefined" ? user.lastName : ""} 💬️ <b>${user.count}</b>` +
+							"\n";
+					}
+				});
+			const output = `<b>Top-${Object.values(stats).length}</b> active users in <i>"${
+				message.chat.title
+			}"</i> community:
+${msgString}
+			`;
+			console.log(output);
+			sendMessage(ctx, output, true, false);
+		});
+	});
+};
+
+module.exports = { messageCounter, messageStats, globalGroupStats };
