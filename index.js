@@ -1,7 +1,6 @@
 const { Telegraf } = require("telegraf");
 const { weather } = require("./modules/weather");
 const { fetchData } = require("./modules/covid/covid");
-const { pinMessage } = require("./modules/pin-message");
 const { gallery } = require("./modules/gallery");
 const { translator } = require("./modules/translator");
 const { updateCovidData } = require("./modules/covid/updateCovidBase");

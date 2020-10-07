@@ -71,7 +71,6 @@ const globalGroupStats = (ctx) => {
 			}"</i> community:
 ${msgString}
 			`;
-			console.log(output);
 			sendMessage(ctx, output, true, false);
 		});
 	});
