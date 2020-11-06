@@ -60,7 +60,7 @@ const globalGroupStats = (ctx) => {
 				.map((user, idx) => {
 					if (idx <= 10) {
 						msgString +=
-							`<b>${idx + 1}</b>. ${user.username && `@${user.username}`} ${
+							`<b>${idx + 1}</b>. ${user.username !== "undefined" ? `@${user.username}` : ""} ${
 								user.firstName && user.firstName
 							} ${user.lastName !== "undefined" ? user.lastName : ""} 💬️ <b>${user.count}</b>` +
 							"\n";
