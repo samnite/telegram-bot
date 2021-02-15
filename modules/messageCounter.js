@@ -58,7 +58,8 @@ const globalGroupStats = (ctx) => {
 				.sort((a, b) => a.count - b.count)
 				.reverse()
 				.map((user, idx) => {
-					if (idx <= 10) {
+					console.log('index', idx);
+					if (idx <= 9) {
 						msgString +=
 							`<b>${idx + 1}</b>. ${user.username !== "undefined" ? `@${user.username}` : ""} ${
 								user.firstName && user.firstName
@@ -66,7 +67,7 @@ const globalGroupStats = (ctx) => {
 							"\n";
 					}
 				});
-			const output = `<b>Top-${Object.values(stats).length}</b> active users in <i>"${
+			const output = `<b>Top-${Object.values(stats).length - 1}</b> active users in <i>"${
 				message.chat.title
 			}"</i> community:
 ${msgString}
