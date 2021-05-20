@@ -67,7 +67,7 @@ const globalGroupStats = (ctx) => {
 							"\n";
 					}
 				});
-			const output = `<b>Top-${Object.values(stats).length - 1}</b> active users in <i>"${
+			const output = `<b>Top-${Object.values(stats).length}</b> active users in <i>"${
 				message.chat.title
 			}"</i> community:
 ${msgString}
