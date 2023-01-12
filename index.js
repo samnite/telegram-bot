@@ -23,7 +23,7 @@ const job = new CronJob("0 0 */8 * * *", function () {
 });
 job.start();
 
-// test
+// test 2
 const mainKeyboard = Markup.keyboard([
 	["⛅ Weather", Markup.locationRequestButton("⛅ Weather (autodetect)")],
 	["🇺🇸 Translate", "🖼️ Gallery"], // Row1 with 2 buttons
