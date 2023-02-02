@@ -14,7 +14,7 @@
 	"dependencies": {
 		"axios": "^0.19.2",
 		"cron": "^1.8.2",
-		"heroku": "^7.41.1",
+		"heroku": "^8.0.0",
 		"moment": "^2.26.0",
 		"mysql": "^2.18.1",
 		"node-fetch": "^2.6.0",
